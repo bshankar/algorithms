@@ -13,6 +13,10 @@ algorithms and for competitive programming.
 4. Extended Euclid's algorithm
 5. Simple diophantine equation (ax + by = c)
 
+### Numerical algorithms
+
+1. Bisection
+
 
 ## In progress
 
