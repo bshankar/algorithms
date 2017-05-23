@@ -1,14 +1,16 @@
 #ifndef PRIME_HPP
 #define PRIME_HPP
 
-/* 
-This file contains functions to do calculations 
-related to primes and factors
+/*
+  This file contains functions to do calculations
+  related to primes and factors
 */
 
 #include <vector>
 #include <map>
 #include <random>
+
+#include "modular.hpp"
 
 using std::vector;
 using std::map;
@@ -38,7 +40,7 @@ bool miller_rabin(T n, T k = 5) {
   // witness loop
   for (int i = 0; i < k; ++i) {
     T a = distribution(generator);
-    T x = pow(a, d, n);
+    T x = modpow(a, d, n);
     if (x == 1 || x == n-1)
       continue;
     bool b = false;
@@ -87,7 +89,7 @@ vector<T> segmented_sieve(T limit, T segment_size=32678) {
     fill(sieve.begin(), sieve.end(), 1);
 
     // current segment = interval [low, high]
-    T high = min(low + segment_size - 1, limit);
+    T high = std::min(low + segment_size - 1, limit);
 
     // store small primes needed to cross off multiples
     for (; s * s <= high; s++)
@@ -126,11 +128,11 @@ vector<T> factors(T n) {
   vector<T> facs = {1};
   if (n > 1) facs.push_back(n);
 
-  for (T i = 2; i*i < n; ++i) 
+  for (T i = 2; i*i <= n; ++i)
     if (n % i == 0) {
       facs.push_back(i);
-      facs.push_back(n/i);
-      n /= i;
+      if (facs.back() != n/i)
+        facs.push_back(n/i);
     }
   return facs;
 }
@@ -147,7 +149,8 @@ map<T, int> prime_factors(T n, vector<T>& primes) {
       n /= prime;
       ++pow;
     }
-    pf[prime] = pow;
+    if (pow)
+      pf[prime] = pow;
   }
   return pf;
 }
@@ -164,7 +167,7 @@ T euler_totient(T n, vector<T>& primes) {
       n /= prime;
       ++pow;
     }
-    t *= pow(prime, pow - 1)*(prime - 1);
+    t *= modpow(prime, pow - 1)*(prime - 1);
   }
   return t;
 }

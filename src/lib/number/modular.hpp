@@ -11,7 +11,7 @@ using std::array;
 template<typename T>
 T gcd(T a, T b) {
   // calculate gcd using euclid's algorithm
-  if (a == 1) return b;
+  if (b == 0) return a;
   return gcd(b, a % b);
 }
 
