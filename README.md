@@ -17,9 +17,10 @@ algorithms and for competitive programming.
 
 1. Bisection
 
-
-## In progress
-
 ### Data Structures
 
+1. Union-Find data structure
+
 ### Graphs
+
+1. Adjacency list representation + skeleton for the graph library
